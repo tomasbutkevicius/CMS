@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CMA</title>
+<link rel="stylesheet" type="text/css" href="./style.css">
+<script src="https://kit.fontawesome.com/483059d9a6.js" crossorigin="anonymous"></script>
+</head>
+<body>
+
+    <h1 id="title">Contact Management Application</h1>
+    <div class="cms-table-container" id = "cmsTableContainer">
+        <div class="cms-table-row">
+            <div class="cms-table-column cms-number cms-header">No.</div>
+            <div class="cms-table-column cms-first-name cms-header">First Name</div>
+            <div class="cms-table-column cms-last-name cms-header">Last Name</div>
+            <div class="cms-table-column cms-phone cms-header">Phone</div>
+            <div class="cms-table-column cms-address cms-header">Address</div>
+            <div class="cms-table-column cms-add-entry-column cms-header" id="cmsAddNewEntry">+</div>
+        </div>
+        <span id="tableBody"></span>
+    </div>
+
+    <div class="disable-modal" id="backdrop"></div>
+
+    <div class="disable-modal" id="newPersonModal">
+        <h1>Add New Person</h1>
+
+        <label for="newPersonFirstName">First Name</label>
+        <input type="text" id="newPersonFirstName">
+        <label for="newPersonLastName">Last Name</label>
+        <input type="text" id="newPersonLastName">
+        <label for="newPersonPhone">Phone</label>
+        <input type="text" id="newPersonPhone">
+        <label for="newPersonAddress">Address</label>
+        <input type="text" id="newPersonAddress">
+
+        <button id="newPersonCancelBtn">Cancel</button>
+        <button id="newPersonSubmitBtn">Submit</button>
+    </div>
+ <script src="script.js"></script>
+</body>
+</html>

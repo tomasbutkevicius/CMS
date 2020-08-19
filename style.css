@@ -45,23 +45,23 @@ body{
 }
 
 .cms-first-name{
-    flex-basis: 20%;
+    flex-basis: 15%;
 }
 
 .cms-last-name{
-    flex-basis: 20%;
+    flex-basis: 15%;
 }
 
 .cms-birth-date{
-    flex-basis: 20%;
+    flex-basis: 15%;
 }
 
 .cms-phone{
-    flex-basis: 20%;
+    flex-basis: 15%;
 }
 
 .cms-email{
-    flex-basis: 20%;
+    flex-basis: 15%;
 }
 
 .cms-address {
@@ -73,9 +73,13 @@ body{
     background-color: rgba(41, 98, 255, 1);
     font-weight: bolder;
 }
-
-.cms-edit, .cms-delete, .cms-add-entry-column {
+.cms-add-entry-column{
     flex-basis: 5%;
+    text-align: center;
+    cursor: pointer;
+}
+.cms-edit, .cms-delete {
+    flex-basis: 2.5%;
     text-align: center;
     cursor: pointer;
 }

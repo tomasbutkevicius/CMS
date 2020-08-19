@@ -1,7 +1,7 @@
 body{
     background-image: url('bg.jpg');
     background-size: cover;
-    background-repeat: no-repeat;
+    background-repeat: repeat;
     background-position: center center;
     overflow-x: hidden;
     padding: 0;
@@ -41,7 +41,7 @@ body{
 
 .cms-number{
     flex-basis: 0%;
-    visibility: hidden;
+    display: none;
 }
 
 .cms-first-name{
@@ -52,7 +52,15 @@ body{
     flex-basis: 20%;
 }
 
+.cms-birth-date{
+    flex-basis: 20%;
+}
+
 .cms-phone{
+    flex-basis: 20%;
+}
+
+.cms-email{
     flex-basis: 20%;
 }
 

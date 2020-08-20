@@ -42,10 +42,10 @@ let refreshDOMTable = () => {
     let newTableBody = document.createElement('span');
     newTableBody.id = 'tableBody';
     tableContainer.appendChild(newTableBody);
-//change number to id ctrlf pls
+
     for(let i =0; i< cmsTableKeys.length; i++){
         let currentRow = document.createElement('div');
-        let currentNumberCol = document.createElement('div');
+        let currentKeyCol = document.createElement('div');
         let currentFirstNameCol = document.createElement('div');
         let currentLastNameCol = document.createElement('div');
         let currentBirthDateCol = document.createElement('div');
@@ -56,7 +56,7 @@ let refreshDOMTable = () => {
         let currentDeleteBtn = document.createElement('div');
 
         currentRow.className = 'cms-table-row';
-        currentNumberCol.className = 'cms-table-column cms-number';
+        currentKeyCol.className = 'cms-table-column cms-key';
         currentFirstNameCol.className = 'cms-table-column cms-first-name';
         currentLastNameCol.className = 'cms-table-column cms-last-name';
         currentBirthDateCol.className = 'cms-table-column cms-birth-date';
@@ -66,7 +66,7 @@ let refreshDOMTable = () => {
         currentEditBtn.className ='cms-table-column cms-edit';
         currentDeleteBtn.className = 'cms-table-column cms-delete';
 
-        currentNumberCol.innerHTML = cmsTableKeys[i];
+        currentKeyCol.innerHTML = cmsTableKeys[i];
         currentFirstNameCol.innerHTML = cmsTable[cmsTableKeys[i]].firstName;
         currentLastNameCol.innerHTML = cmsTable[cmsTableKeys[i]].lastName;
         currentBirthDateCol.innerHTML = cmsTable[cmsTableKeys[i]].birthDate;
@@ -79,7 +79,7 @@ let refreshDOMTable = () => {
         currentDeleteBtn.innerHTML = '<i class="fas fa-trash"></i>';
         currentEditBtn.innerHTML = '<i class="fas fa-edit"></i>';
 
-        currentRow.appendChild(currentNumberCol);
+        currentRow.appendChild(currentKeyCol);
         currentRow.appendChild(currentFirstNameCol);
         currentRow.appendChild(currentLastNameCol);
         currentRow.appendChild(currentBirthDateCol);
@@ -113,34 +113,21 @@ let refreshDOMTable = () => {
         backdrop.className = `${option}-modal`
     }
 
-    let checkIfEmpty = (value) => {
-        if(value === ''){
-            value.className = 'input-err';
-        } else {
-            value.className = '';
-        }
-    }
-
-    let addNewEntryBtn = document.getElementById('cmsAddNewEntry');
-    let editBtns = document.getElementsByClassName('cms-edit');
-    let deleteBtns = document.getElementsByClassName('cms-delete');
 
     let newPersonSubmitBtn = document.getElementById('newPersonSubmitBtn');
-    let newPersonCancelBtn = document.getElementById('newPersonCancelBtn');
-
-
     //ADD
     newPersonSubmitBtn.addEventListener('click', () => {
-        let newPersonFirstName = document.getElementById('newPersonFirstName').value.trim();
-        let newPersonLastName = document.getElementById('newPersonLastName').value.trim();
-        let newPersonNumber = newPersonFirstName + newPersonLastName;
-        let newPersonBirthDate = document.getElementById('newPersonBirthDate').value.trim();
-        let newPersonPhone = document.getElementById('newPersonPhone').value.trim();
-        let newPersonEmail = document.getElementById('newPersonEmail').value.trim();
-        let newPersonAddress = document.getElementById('newPersonAddress').value.trim();
-        let errorMessage = document.getElementById("errorMessage");
+        let newPersonFirstName  = document.getElementById('newPersonFirstName').value.trim();
+        let newPersonLastName   = document.getElementById('newPersonLastName').value.trim();
+        let newPersonKey        = newPersonFirstName + newPersonLastName;
+        let newPersonBirthDate  = document.getElementById('newPersonBirthDate').value.trim();
+        let newPersonPhone      = document.getElementById('newPersonPhone').value.trim();
+        let newPersonEmail      = document.getElementById('newPersonEmail').value.trim();
+        let newPersonAddress    = document.getElementById('newPersonAddress').value.trim();
+        let errorMessage        = document.getElementById("errorMessage");
         let isValidEmail = false;
         let isValidPhone = false;
+        let isValidKey   = true;
 
         if(newPersonFirstName === ''){
             document.getElementById('newPersonFirstName').className = 'input-err';
@@ -180,33 +167,43 @@ let refreshDOMTable = () => {
                     isValidEmail = false;
                     errorMessage.textContent = 'Email is already used';
                     document.getElementById('newPersonEmail').className = 'input-err';
-            }
+            } 
+
+             else   if (validatePhone(newPersonPhone)) {
+                            isValidPhone = true;
+                            errorMessage.textContent = '';
+                            document.getElementById('newPersonPhone').className = ''; 
+                            if (!editingEnabled && isPhoneAlreadyUsed(newPersonPhone)){
+                                    isValidPhone = false;
+                                    errorMessage.textContent = 'Phone is already used';
+                                    document.getElementById('newPersonPhone').className = 'input-err';
+                            }
+
+                        } else {
+                            errorMessage.textContent += ' Phone is not valid';
+                            document.getElementById('newPersonPhone').className = 'input-err';
+                        }
 
         } else {
             errorMessage.textContent = 'Email is not valid';
             document.getElementById('newPersonEmail').className = 'input-err';
         }
 
-        if (validatePhone(newPersonPhone)) {
-            isValidPhone = true;
-            errorMessage.textContent = '';
-            document.getElementById('newPersonPhone').className = ''; 
-            if (!editingEnabled && isPhoneAlreadyUsed(newPersonPhone)){
-                    isValidPhone = false;
-                    errorMessage.textContent = 'Phone is already used';
-                    document.getElementById('newPersonPhone').className = 'input-err';
+        if(!editingEnabled && isValidEmail && isValidPhone){
+            if(isKeyAlreadyUsed(newPersonKey)){
+                isValidKey = false;
+                errorMessage.textContent = 'Contact Name is already taken';
+                document.getElementById('newPersonFirstName').className = 'input-err';
+                document.getElementById('newPersonLastName').className  = 'input-err';
+            } else {
+                errorMessage.textContent = '';
             }
-
-        } else {
-            errorMessage.textContent = 'Phone is not valid';
-            document.getElementById('newPersonPhone').className = 'input-err';
         }
-
 
         if(newPersonFirstName !== '' && newPersonLastName !== '' && newPersonPhone !== ''
          && newPersonEmail !== '' && newPersonBirthDate !== ''
-         && isValidEmail && isValidPhone){
-            cmsTable[newPersonNumber] = {
+         && isValidEmail && isValidPhone && isValidKey){
+            cmsTable[newPersonKey] = {
                 'firstName': newPersonFirstName,
                 'lastName': newPersonLastName,
                 'birthDate': newPersonBirthDate,
@@ -220,10 +217,14 @@ let refreshDOMTable = () => {
         }
     });
 
+    let newPersonCancelBtn = document.getElementById('newPersonCancelBtn');
+
     newPersonCancelBtn.addEventListener('click', () => {
         enableDisableNewUserModal('disable');
         refreshDOMTable();
     })
+
+    let addNewEntryBtn = document.getElementById('cmsAddNewEntry');
 
     addNewEntryBtn.addEventListener('click', () => {
         enableDisableNameInput('enable');
@@ -231,15 +232,18 @@ let refreshDOMTable = () => {
         editingEnabled = false;
     });
 
-
+    let editBtns = document.getElementsByClassName('cms-edit');
     //EDIT
     for(let i = 0; i < editBtns.length; i++){
         editBtns[i].addEventListener('click', ($event)=>{
+
             editingEnabled = true;
+
             let headerText = document.getElementById("newPersonModalHeader");
             headerText.textContent = "Edit contact";
-            let numberToEdit = $event.target.parentElement.children[0].innerText;
-            let personToEdit = cmsTable[numberToEdit];
+
+            let keyToEdit = $event.target.parentElement.children[0].innerText;
+            let personToEdit = cmsTable[keyToEdit];
             enableDisableNewUserModal('enable'); 
 
             let newPersonFirstName = document.getElementById('newPersonFirstName'); 
@@ -264,18 +268,19 @@ let refreshDOMTable = () => {
         })
     }
 
+    let deleteBtns = document.getElementsByClassName('cms-delete');
+
     //DELETE
     for(let i = 0; i < deleteBtns.length; i++){
         deleteBtns[i].addEventListener('click', ($event)=>{
-            let numberToDelete = $event.target.parentElement.children[0].innerText;
-            console.log(numberToDelete);
+            let keyToDelete = $event.target.parentElement.children[0].innerText;
             let firstNameToDelete = $event.target.parentElement.children[1].innerText;
             let lastNameToDelete = $event.target.parentElement.children[2].innerText;
             let isSure = window.confirm('Are you sure you want to delete '
              + firstNameToDelete + ' ' + lastNameToDelete + '?');
 
             if(isSure){
-                deleteUserFromTable(numberToDelete);
+                deleteUserFromTable(keyToDelete);
             }
         });
     }
@@ -291,52 +296,66 @@ let refreshDOMTable = () => {
         return re.test(String(phone).toLowerCase());
     }
 
-    let deleteUserFromTable = (userNumber) => {
+    let deleteUserFromTable = (userKey) => {
         let tempTable = {};
         let cmsTableKeys = Object.keys(cmsTable);
         for(let i = 0; i < cmsTableKeys.length; i++){
-            if(userNumber !== cmsTableKeys[i]){
+            if(userKey !== cmsTableKeys[i]){
                 tempTable[cmsTableKeys[i]] = cmsTable[cmsTableKeys[i]];
             }
-    }
-    cmsTable = tempTable;
-    localStorage.setItem(tableKey, JSON.stringify(cmsTable));
-    refreshDOMTable();
+        }
+        cmsTable = tempTable;
+        localStorage.setItem(tableKey, JSON.stringify(cmsTable));
+        refreshDOMTable();
     }
 
     let isPhoneAlreadyUsed = (phoneNumber) => {
-        let tempTable = {};
         let cmsTableKeys = Object.keys(cmsTable);
+        
         for(let i = 0; i < cmsTableKeys.length; i++){
             if(phoneNumber === cmsTable[cmsTableKeys[i]].phone){
                 return true;
             }
+        }
+        return false;
     }
-    return false;
+
+    let isKeyAlreadyUsed = (personKey) => {
+        let cmsTableKeys = Object.keys(cmsTable);
+        for(let i = 0; i < cmsTableKeys.length; i++){
+            if(personKey === cmsTableKeys[i]){
+                return true;
+            }
+        }
+        return false;
     }
 
     function isEmailAlreadyUsed(email) {
         let tempTable = {};
         let cmsTableKeys = Object.keys(cmsTable);
+
         for(let i = 0; i < cmsTableKeys.length; i++){
             if(email === cmsTable[cmsTableKeys[i]].email){
                 return true;
             }
-    }
-    return false;
+        }   
+
+        return false;
     }
 }
 
 let init = () => {
     cmsTable = cmsTableDemo;
     localStorage.setItem(tableKey, JSON.stringify(cmsTable));
+
     if(localStorage.getItem(tableKey)){
         cmsTable = JSON.parse(localStorage.getItem(tableKey));
     } else {
         cmsTable = cmsTableDemo;
         localStorage.setItem(tableKey, JSON.stringify(cmsTable));
     }
- refreshDOMTable();
+
+    refreshDOMTable();
 }
 
 init();

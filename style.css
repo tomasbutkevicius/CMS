@@ -24,7 +24,6 @@ body{
     color: white;
     font-size: 20px;
     margin-top: 35px;
-    width: 80%;
     margin: auto;
 }
 
@@ -41,7 +40,7 @@ body{
     text-overflow: ellipsis;
 }
 
-.cms-number{
+.cms-key{
     flex-basis: 0%;
     display: none;
 }
@@ -72,14 +71,14 @@ body{
 }
 
 .cms-header.cms-address{
-    flex-basis: 26.5%;
+    flex-basis: 25.4%;
 }
 .cms-header{
     background-color: black;
     font-weight: bolder;
 }
 .cms-add-entry-column{
-    flex-basis: 2.3%;
+    flex-basis: 2.5%;
     text-align: center;
     cursor: pointer;
 }

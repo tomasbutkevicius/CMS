@@ -1,11 +1,12 @@
 body{
-    background-image: url('bg.jpg');
-    background-size: cover;
+    /* background-image: url('bg.jpg'); */
+    /* background-size: cover;
     background-repeat: repeat;
     background-position: center center;
     overflow-x: hidden;
     padding: 0;
-    margin: 0;
+    margin: 0; */
+    background-color: #5F9EA0;
 }
 
 #title{
@@ -14,15 +15,16 @@ body{
     text-align: center;
     margin-top: 20px;
     font-size: 48px;
+    padding-bottom: 50px;
     text-shadow: 5px 5px 5px black;
 }
 
 .cms-table-container {
+    background-color: white;
     color: white;
     font-size: 20px;
     margin-top: 35px;
     width: 80%;
-    padding-top: 50px;
     margin: auto;
 }
 
@@ -31,7 +33,7 @@ body{
 }
 
 .cms-table-column{
-    background-color: rgba(41, 98, 255, 0.8);
+    background-color: #2F4F4F;
     margin: 2px;
     padding: 15px;
     white-space: nowrap;
@@ -69,12 +71,15 @@ body{
     flex-basis: 20%;
 }
 
+.cms-header.cms-address{
+    flex-basis: 26.5%;
+}
 .cms-header{
-    background-color: rgba(41, 98, 255, 1);
+    background-color: black;
     font-weight: bolder;
 }
 .cms-add-entry-column{
-    flex-basis: 5%;
+    flex-basis: 2.3%;
     text-align: center;
     cursor: pointer;
 }
@@ -82,6 +87,13 @@ body{
     flex-basis: 2.5%;
     text-align: center;
     cursor: pointer;
+}
+.cms-delete{
+    background-color: #B22222;
+}
+
+.cms-edit{
+    background-color: #DAA520;
 }
 
 #newPersonModal {
@@ -126,6 +138,10 @@ body{
 #newPersonCancelBtn {
     color: white;
     background-color: rgba(151, 47, 47);
+}
+
+#cmsAddNewEntry{
+    background-color: #228B22;
 }
 
 button {

@@ -34,7 +34,7 @@ let enableDisableNameInput = (option)=>{
 
 let refreshDOMTable = () => {
     let editingEnabled = false;
-    let cmsTableKeys = Object.keys(cmsTable); // ['Giggle Kible', 'Merry Jingles']
+    let cmsTableKeys = Object.keys(cmsTable);
     let tableContainer = document.getElementById("cmsTableContainer");
     let oldTableBody = document.getElementById('tableBody');
     tableContainer.removeChild(oldTableBody);
